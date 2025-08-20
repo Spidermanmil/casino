@@ -8,39 +8,49 @@ app.use(express.json());
 const generateRoomCode = () => Math.random().toString(36).substring(2, 6).toUpperCase();
 
 app.post('/api/room/create', async (req, res) => {
-  const { playerName } = req.body;
-  if (!playerName) {
-    return res.status(400).json({ error: 'Player name is required' });
+  try {
+    const { playerName } = req.body;
+    if (!playerName) {
+      return res.status(400).json({ error: 'Player name is required' });
+    }
+
+    let roomCode = generateRoomCode();
+    while (await kv.exists(roomCode)) {
+      roomCode = generateRoomCode();
+    }
+
+    const room = {
+      code: roomCode,
+      players: [{ id: Date.now().toString(), name: playerName, chips: 100, isHost: true }],
+      pot: 0,
+      gameStarted: false,
+      currentBets: {},
+    };
+
+    await kv.set(roomCode, room);
+    res.json({ roomCode, playerId: room.players[0].id });
+  } catch (error) {
+    console.error('Error creating room:', error);
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
   }
-
-  let roomCode = generateRoomCode();
-  while (await kv.exists(roomCode)) {
-    roomCode = generateRoomCode();
-  }
-
-  const room = {
-    code: roomCode,
-    players: [{ id: Date.now().toString(), name: playerName, chips: 100, isHost: true }],
-    pot: 0,
-    gameStarted: false,
-    currentBets: {},
-  };
-
-  await kv.set(roomCode, room);
-  res.json({ roomCode, playerId: room.players[0].id });
 });
 
 app.post('/api/room/join', async (req, res) => {
-  const { roomCode, playerName } = req.body;
-  const room = await kv.get(roomCode);
-  if (!room) {
-    return res.status(404).json({ error: 'Room not found' });
-  }
+  try {
+    const { roomCode, playerName } = req.body;
+    const room = await kv.get(roomCode);
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
+    }
 
-  const newPlayer = { id: Date.now().toString(), name: playerName, chips: 100, isHost: false };
-  room.players.push(newPlayer);
-  await kv.set(roomCode, room);
-  res.json({ playerId: newPlayer.id });
+    const newPlayer = { id: Date.now().toString(), name: playerName, chips: 100, isHost: false };
+    room.players.push(newPlayer);
+    await kv.set(roomCode, room);
+    res.json({ playerId: newPlayer.id });
+  } catch (error) {
+    console.error('Error joining room:', error);
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
+  }
 });
 
 const handler = (req, res) => {
