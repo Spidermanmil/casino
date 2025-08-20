@@ -28,7 +28,7 @@ function App() {
   const [room, setRoom] = useState<Room | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
   
-  const showToast = (title: string, status: 'success' | 'error' | 'info' = 'info', description?: string) => {
+    const showToast = (title: string, description?: string) => {
     alert(`${title}: ${description || ''}`);
   };
 
@@ -66,7 +66,7 @@ function App() {
 
   const createRoom = async () => {
     if (!playerName.trim()) {
-      showToast('Error', 'error', 'Please enter your name');
+      showToast('Error', 'Please enter your name');
       return;
     }
 
@@ -83,13 +83,13 @@ function App() {
       });
       setScreen('lobby');
     } catch (error) {
-      showToast('Error', 'error', 'Failed to create room');
+      showToast('Error', 'Failed to create room');
     }
   };
 
   const joinRoom = async () => {
     if (!playerName.trim() || !roomCode.trim()) {
-      showToast('Error', 'error', 'Please enter your name and room code');
+      showToast('Error', 'Please enter your name and room code');
       return;
     }
 
@@ -107,7 +107,7 @@ function App() {
       });
       setScreen('lobby');
     } catch (error: any) {
-      showToast('Error', 'error', error.response?.data?.error || 'Failed to join room');
+      showToast('Error', error.response?.data?.error || 'Failed to join room');
     }
   };
 
@@ -285,7 +285,7 @@ function App() {
                       addChips(selectedPlayerId, amount);
                       amountInput.value = '';
                     } else {
-                      showToast('Error', 'error', 'Please enter a valid amount');
+                      showToast('Error', 'Please enter a valid amount');
                     }
                   }}
                 >Add Chips</button>
