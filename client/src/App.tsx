@@ -27,6 +27,8 @@ function App() {
   const [playerId, setPlayerId] = useState('');
   const [room, setRoom] = useState<Room | null>(null);
   const [socket, setSocket] = useState<Socket | null>(null);
+  const [addChipsPlayerId, setAddChipsPlayerId] = useState('');
+  const [addChipsAmount, setAddChipsAmount] = useState('');
   
     const showToast = (title: string, description?: string) => {
     alert(`${title}: ${description || ''}`);
@@ -269,19 +271,28 @@ function App() {
             <div className="host-panel">
               <h3>Host Controls</h3>
               <div className="add-chips-form">
-                <select id="player-select" className="input">
+                <select 
+                  value={addChipsPlayerId || (room?.players[0]?.id ?? '')}
+                  onChange={(e) => setAddChipsPlayerId(e.target.value)} 
+                  className="input"
+                >
                   {room?.players.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                 </select>
-                <input id="add-chips-amount" type="number" placeholder="Amount" className="input bet-input" />
+                <input 
+                  type="number" 
+                  placeholder="Amount" 
+                  value={addChipsAmount}
+                  onChange={(e) => setAddChipsAmount(e.target.value)}
+                  className="input bet-input" 
+                />
                 <button 
                   className="btn btn-secondary"
                   onClick={() => {
-                    const selectedPlayerId = (document.getElementById('player-select') as HTMLSelectElement).value;
-                    const amountInput = (document.getElementById('add-chips-amount') as HTMLInputElement);
-                    const amount = parseInt(amountInput.value);
-                    if (!isNaN(amount) && amount > 0) {
-                      addChips(selectedPlayerId, amount);
-                      amountInput.value = '';
+                    const amount = parseInt(addChipsAmount);
+                    const targetPlayerId = addChipsPlayerId || (room?.players[0]?.id ?? '');
+                    if (targetPlayerId && !isNaN(amount) && amount > 0) {
+                      addChips(targetPlayerId, amount);
+                      setAddChipsAmount('');
                     } else {
                       showToast('Error', 'Please enter a valid amount');
                     }

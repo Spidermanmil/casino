@@ -22,6 +22,8 @@ app.post('/api/room/create', async (req, res) => {
     code: roomCode,
     players: [{ id: Date.now().toString(), name: playerName, chips: 100, isHost: true }],
     pot: 0,
+    gameStarted: false,
+    currentBets: {},
   };
 
   await kv.set(roomCode, room);
@@ -48,6 +50,32 @@ const handler = (req, res) => {
 
     io.on('connection', (socket) => {
       console.log('Client connected:', socket.id);
+
+      socket.on('startGame', async ({ roomCode }) => {
+        const room = await kv.get(roomCode);
+        if (room) {
+          room.gameStarted = true;
+          // Reset pot and bets for a new game
+          room.pot = 0;
+          room.players.forEach(p => room.currentBets[p.id] = 0);
+          await kv.set(roomCode, room);
+          io.to(roomCode).emit('roomUpdate', room);
+        }
+      });
+
+      socket.on('placeBet', async ({ roomCode, playerId, amount }) => {
+        const room = await kv.get(roomCode);
+        if (room) {
+          const player = room.players.find(p => p.id === playerId);
+          if (player && player.chips >= amount) {
+            player.chips -= amount;
+            room.pot += amount;
+            room.currentBets[player.id] = (room.currentBets[player.id] || 0) + amount;
+            await kv.set(roomCode, room);
+            io.to(roomCode).emit('roomUpdate', room);
+          }
+        }
+      });
 
       socket.on('joinRoom', async ({ roomCode, playerId }) => {
         const room = await kv.get(roomCode);
@@ -76,6 +104,7 @@ const handler = (req, res) => {
           if (winner) {
             winner.chips += room.pot;
             room.pot = 0;
+            room.players.forEach(p => room.currentBets[p.id] = 0);
             await kv.set(roomCode, room);
             io.to(roomCode).emit('roomUpdate', room);
           }
