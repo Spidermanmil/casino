@@ -83,6 +83,7 @@ function App() {
       });
       setScreen('lobby');
     } catch (error) {
+      console.error('Failed to create room:', error);
       showToast('Error', 'Failed to create room');
     }
   };
@@ -107,6 +108,7 @@ function App() {
       });
       setScreen('lobby');
     } catch (error: any) {
+      console.error('Failed to join room:', error);
       showToast('Error', error.response?.data?.error || 'Failed to join room');
     }
   };
