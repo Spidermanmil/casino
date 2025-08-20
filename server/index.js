@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-  path: '/api/socket.io/',
+  ...(process.env.VERCEL && { path: '/api/socket.io/' }),
   cors: {
     origin: "*",
     methods: ["GET", "POST"]
