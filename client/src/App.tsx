@@ -35,7 +35,7 @@ function App() {
   useEffect(() => {
     // Initialize socket connection
     const newSocket = io(API_URL, {
-      path: import.meta.env.PROD ? '/socket.io' : '/socket.io'
+      path: '/socket.io/'
     });
     setSocket(newSocket);
 
