@@ -34,9 +34,7 @@ function App() {
 
   useEffect(() => {
     // Initialize socket connection
-    const newSocket = io(API_URL, {
-      path: '/socket.io/'
-    });
+    const newSocket = io(API_URL);
     setSocket(newSocket);
 
     // Clean up on unmount
