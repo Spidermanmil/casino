@@ -1,0 +1,295 @@
+.app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  padding: 20px;
+}
+
+.container {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  color: #555;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+h3 {
+  color: #666;
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.input {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e1e5e9;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.btn {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 5px;
+  min-width: 150px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #5a6fd8;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: #764ba2;
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #6a4190;
+  transform: translateY(-2px);
+}
+
+.btn-success {
+  background: #28a745;
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: #218838;
+  transform: translateY(-2px);
+}
+
+.btn-bet {
+  background: #17a2b8;
+  color: white;
+  min-width: 80px;
+}
+
+.btn-bet:hover:not(:disabled) {
+  background: #138496;
+  transform: translateY(-2px);
+}
+
+.divider {
+  margin: 30px 0;
+  color: #999;
+  font-weight: 500;
+  position: relative;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e1e5e9;
+  z-index: 1;
+}
+
+.divider {
+  background: white;
+  padding: 0 20px;
+  z-index: 2;
+  position: relative;
+}
+
+.room-code {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: #666;
+}
+
+.players-section {
+  margin: 30px 0;
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.player-card {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.player-card.current-player {
+  background: #e3f2fd;
+  border-color: #2196f3;
+}
+
+.player-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.player-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.player-chips {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.player-bet {
+  color: #28a745;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.pot-section {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  border-radius: 15px;
+  padding: 25px;
+  margin: 30px 0;
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.pot-section h2 {
+  margin: 0;
+  color: #333;
+  font-size: 2rem;
+}
+
+.betting-section {
+  background: #f8f9fa;
+  border-radius: 15px;
+  padding: 25px;
+  margin-top: 30px;
+}
+
+.betting-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.bet-input {
+  max-width: 150px;
+  margin: 0;
+}
+
+.host-controls {
+  margin-top: 10px;
+}
+
+.host-panel {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #343a40;
+  border-radius: 8px;
+}
+
+.host-panel h3 {
+  margin-top: 0;
+}
+
+.add-chips-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chips-remaining {
+  color: #666;
+  font-style: italic;
+  margin-top: 15px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+    margin: 10px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  .input,
+  .btn {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .players-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .betting-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .bet-input {
+    max-width: none;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .add-chips-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
