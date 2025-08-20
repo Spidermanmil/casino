@@ -3,7 +3,7 @@ import { io, Socket } from 'socket.io-client';
 import axios from 'axios';
 import './App.css';
 
-const API_URL = import.meta.env.PROD ? '' : 'http://localhost:5001';
+const API_URL = import.meta.env.DEV ? 'http://localhost:5001' : '';
 
 interface Player {
   id: string;
@@ -35,7 +35,7 @@ function App() {
   useEffect(() => {
     // Initialize socket connection
     const newSocket = io(API_URL, {
-      path: import.meta.env.PROD ? '/api/socket.io/' : undefined
+      path: import.meta.env.PROD ? '/socket.io' : '/socket.io'
     });
     setSocket(newSocket);
 
